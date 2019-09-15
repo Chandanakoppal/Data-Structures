@@ -1,35 +1,114 @@
-#include <assert.h>
+#include<stdlib.h>
+#include<stddef.h>
+#include<assert.h>
 #include "slist_double.h"
 
-int main()
+Slist slist_new()
 {
-	Slist s = slist_new();
-	Slist *list = &s;
+    Slist s={NULL,NULL,0};    
+    return s;
+}
 
-	list=slist_add_tail(list,10);
-	list=slist_add_tail(list,20);
-	list=slist_add_tail(list,30);
-	list=slist_add_tail(list,40);
+static Node* slist_new_node(int32_t element)
+{
+    Node *new_node=(Node *)malloc(sizeof(Node));
+    new_node -> data=element;
+    new_node->next=NULL;
+    new_node->prev=NULL;
+    return new_node;
+}
 
-	list=slist_delete_tail(list);
-	list=slist_delete_tail(list);
+uint32_t slist_length(Slist *list)
+{
+        assert(list!=NULL);
+        return list->length;
+}
 
-	assert(slist_lookup(list,20)==1);
-	assert(slist_lookup(list,80)==0);
+uint32_t slist_lookup(Slist *list,int32_t key)
+{
+        assert(list!=NULL);
+        Node *cur;
+        for(cur=list->head;cur!=NULL;cur=cur->next)
+        { if(cur->data==key){
+          break;
 
-	slist_add_head(list,30);
-	slist_add_head(list,40);
+         }
+        }
+        return (cur!=NULL);
+}
 
-	slist_delete_head(list);
-	assert(slist_length(list)!=2);
-	slist_delete_head(list);
-	slist_delete_head(list);
 
-	slist_delete_head(list);
+Slist* slist_add_tail(Slist *list,int32_t element)
+{
+        assert(list!=NULL);
+        Node *new_node=slist_new_node(element);
+        if(list->tail!=NULL){
+                list->tail->next=new_node;
+                //list->tail->prev=new_node;
+		new_node->prev=list->tail;
+		list->tail=new_node;		
+        }
+        else{
+                list->tail=list->head=new_node;
+        }
+        ++list->length;
+        return list;
+}
 
-	assert(slist_length(list)==0);
-	slist_add_head(list,30);
-	
-	assert(slist_length(list)==1);
-	return 0;
+
+Slist* slist_delete_tail(Slist *list)
+{
+        assert(list!=NULL);
+        Node *cur,*temp;
+	temp=list->tail;
+        if(list->tail!=NULL)
+        {
+            list->tail=cur;
+            cur = list->tail->prev;
+	    cur->next=NULL;
+	             
+	    --list->length;
+        }
+        return list;
+}
+
+Slist* slist_add_head(Slist *list,int32_t element)
+{
+	assert(list!=NULL);
+	Node *temp;
+	temp= list->head;
+    if(list->length == 0){
+        Node *new_node = slist_new_node(element);
+        list->head = new_node;
+        list->tail = new_node;
+        list->length = 1;
+    }
+    else{
+	Node *new_node = slist_new_node(element);
+	temp->prev = new_node;
+	new_node->next = temp;
+	++list->length;
+	list->head = new_node;
+}
+	return list;
+}
+
+
+Slist* slist_delete_head(Slist *list)
+{
+	assert(list!=NULL);
+    Node *temp;
+    temp = list->head->next;
+    if(list->length==1)
+    {
+        list->head= NULL;
+        list->tail= NULL;
+        list->length =0;
+    }
+	else{
+    list->head = temp;
+    --list->length;
+}
+    return list;
+
 }
