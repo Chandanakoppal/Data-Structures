@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include"stack.h"
+#include"bal.h"
 
 void init(){
     st.top = -1;
