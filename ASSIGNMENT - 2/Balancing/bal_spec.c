@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include"stack.c"
+#include"bal.c"
 
 void main()
 {
