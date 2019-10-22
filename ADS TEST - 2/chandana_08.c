@@ -43,6 +43,7 @@ uint32_t slist_length(Slist *list)
         return list -> length;
 }
 
+
 void traverse(Slist *list) {
 assert(list!=NULL);
    Node *t;  
@@ -61,18 +62,47 @@ assert(list!=NULL);
       printf("%d\n", t->landing);
 }
 
-void 
 
-int main()
-{
-    Slist s = slist_new();
-    Slist *list = &s;
+void sort(Slist *list) {
+    uint32_t arr[4];
+    assert(list!=NULL);
+   Node *t;  
+   t=list->head;
+   uint32_t i = 0;
+   while (t->next != NULL) {
+    arr[i++]=t->time_stamp;
+    n = 4;
 
-    list = slist_add_head(list, 1000, 123,1,9);
-    list = slist_add_head(list, 2030, 234,12,8);
-    list = slist_add_head(list, 1230, 321,10,7);
-    list = slist_add_head(list, 1130, 678,12,8);
-    
-    traverse(list);
+    void swap(int *xp, int *yp) 
+{ 
+    int temp = *xp; 
+    *xp = *yp; 
+    *yp = temp; 
+} 
+  
+void bubbleSort(int arr[], int n) 
+{ 
+   int i, j; 
+   for (i = 0; i < n-1; i++)       
+        
+       for (j = 0; j < n-i-1; j++)  
+           if (arr[j] > arr[j+1]) 
+              swap(&arr[j], &arr[j+1]); 
+} 
+  
+
+void printArray(int arr[], int size) 
+{ 
+    int i; 
+    for (i=0; i < size; i++) 
+        printf("%d ", arr[i]); 
+    printf("\n"); 
+} 
+
+
 }
+
+
+   
+
 
