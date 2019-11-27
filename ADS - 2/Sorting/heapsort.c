@@ -1,57 +1,118 @@
-#include<stdio.h>
-#include<assert.h>
-#include<stdint.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
 #include "heapsort.h"
-#include<string.h>
-static void _heapify_(int32_t a[],int32_t length,int32_t parent)
-{
-	int32_t child = 2*parent;
 
-	while(child<=length)
-	{
-		if(child+1<=length)
-		{
-			if(a[child+1]>a[child])
-			{
-				child++;
+
+static void _swap_(int32_t *data1, int32_t *data2) {
+	int32_t temp = *data1;
+	*data1 = *data2;
+	*data2 = temp;
+}
+
+static void _heapify_ (int32_t data[], uint32_t len, uint32_t parent) {
+	assert (len > 0 && len < HEAP_MAX_SIZE && parent > 0 );
+
+	uint32_t child = 2 * parent;
+
+	while (child <= len) {
+		if (child + 1 <= len) {
+			if (data[child+1] > data[child]){
+				++child;
 			}
 		}
-		if(a[parent]>=a[child])
-		{
+		if (data[parent] >= data[child]) {
 			break;
 		}
-		int32_t temp;
-		temp=a[child];
-		a[child] = a[parent];
-		a[parent] = a[temp];
-		parent=child;
-		child = 2*parent;
+		_swap_(&data[parent], &data[child]);
+		parent = child;
+		child = 2 * parent;
 	}
 }
 
-Heap heap_new(int32_t data[],int32_t length)
-{
-	assert(length>0 && length<HEAP_SIZE);
-	Heap heap;
-	int32_t parent;
-	for(parent=length/2;parent>0;parent--)
-	{
-		_heapify_(data,length,parent);
+static void _test_heap_(int32_t data[], uint32_t len) {
+
+uint32_t child;
+	for ( child = len; child > 1; --child) {
+		assert(data[child] <= data[child/2]);
 	}
-	heap.size = length;
-	memcpy(heap.data,data,(length+1)*sizeof(int32_t));	
+
+}
+
+Heap*	heap_test(Heap *heap)
+{
+	_test_heap_(heap->data, heap->size);
+}
+
+Heap 	heap_new(int32_t data[], uint32_t len) {
+	assert (len > 0 && len < HEAP_MAX_SIZE);
+
+	Heap heap;
+	uint32_t idx = len/2;
+	for (idx = len/2; idx > 0; --idx) {
+		_heapify_(data, len, idx);
+	}
+	heap.size = len;
+	memcpy(heap.data, data, (len+1) * sizeof(int32_t));
+	_test_heap_(heap.data, heap.size);
+
 	return heap;
 }
 
-Heap* heap_sort(Heap *heap)
-{
-	for(int32_t i=heap->size;i>0;i--)
-	{
-		int32_t temp;
-		temp = heap->data[i];
-		heap->data[i] = heap->data[1];
-		heap->data[1] = temp;
-		_heapify_(heap->data,i-1,1); 
+Heap*	heap_sort(Heap *heap) {
+	assert (heap->size > 0 && heap->size < HEAP_MAX_SIZE);
+
+	uint32_t idx = heap->size;
+
+	for (idx = heap->size; idx > 1; idx--) {
+		_swap_(&heap->data[idx], &heap->data[1]);
+		_heapify_(heap->data, idx-1, 1);
 	}
-return heap;
+
+	return heap;
+}
+
+
+Heap*	heap_insert(Heap *heap, int32_t key)
+{
+	assert (heap->size > 0 && heap->size+1 < HEAP_MAX_SIZE);
+
+	++heap->size;
+	uint32_t parent = heap->size/2;
+	uint32_t loc = heap->size;
+
+	while ( loc > 1 && heap->data[parent] < key) {
+		heap->data[loc] = heap->data[parent];
+		loc = parent;
+		parent = parent/2;
+	}
+	heap->data[loc] = key;
+	return heap;
+
+}
+
+int32_t		heap_get_max(Heap *heap)
+{
+	assert (heap->size > 0 && heap->size < HEAP_MAX_SIZE);
+	return heap->data[1];
+
+}
+
+int32_t		heap_extract_max(Heap *heap)
+{
+	assert (heap->size > 0 && heap->size < HEAP_MAX_SIZE);
+
+	int32_t max = heap->data[1];	
+	_swap_(&heap->data[1], &heap->data[heap->size]);
+	--heap->size;
+	_heapify_(heap->data, heap->size, 1);
+
+	return max;
+}
+
+uint32_t	heap_size(Heap *heap)
+{
+	assert (heap->size > 0 && heap->size < HEAP_MAX_SIZE);
+	return heap->size;
 }
