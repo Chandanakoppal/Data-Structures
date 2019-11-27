@@ -14,6 +14,7 @@ the list.*/
 	list = slist_add_head(list, 20);
 	list = slist_add_head(list, 30);
 	list = slist_add_head(list, 40);
+	list = slist_display(list);
 
 	assert (slist_length(list) == 4);
 	list = slist_delete_head(list);
