@@ -1,5 +1,5 @@
 #include<assert.h>
-#include"s1.c"
+#include"stack.c"
 
 void test_empty_stack()
 {
