@@ -3,7 +3,6 @@
 #include<stdint.h>
 #include<assert.h>
 #include "queue.h"
-
 Queue queue_new(uint32_t size)
 {
     size = (size>0 && size<MAX_DEPTH)?size:MAX_DEPTH;
@@ -57,18 +56,12 @@ Queue* queue_delete(Queue *q,Queue_Result *res)
     return q;
 }
 
-
-void queue_display(Queue *q) 
-    { 
-        int i; 
-        if (q->head == q->tail) { 
-            printf("\nQueue is Empty\n"); 
-            return; 
-        } 
-
-        // traverse front to rear and print elements 
-        for (i = q->head; i < q->tail; i++) { 
-            printf(" %d <-- ", q->data[i]); 
-        } 
-        return; 
-    } 
+void queue_display(Queue *q)
+{
+	assert(q!=NULL);
+	
+	while(q->head!=q->count){	
+    		printf("%d ", q->data[q->head]);
+    		++q->head;
+	}
+}
