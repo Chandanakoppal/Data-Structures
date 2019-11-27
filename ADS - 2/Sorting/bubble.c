@@ -1,40 +1,30 @@
-#include <stdio.h> 
-  
-void swap(int *xp, int *yp) 
-{ 
-    int temp = *xp; 
-    *xp = *yp; 
-    *yp = temp; 
-} 
-  
-// A function to implement bubble sort 
-void bubbleSort(int arr[], int n) 
-{ 
-   int i, j; 
-   for (i = 0; i < n-1; i++)       
-  
-       // Last i elements are already in place    
-       for (j = 0; j < n-i-1; j++)  
-           if (arr[j] > arr[j+1]) 
-              swap(&arr[j], &arr[j+1]); 
-} 
-  
-/* Function to print an array */
-void printArray(int arr[], int size) 
-{ 
-    int i; 
-    for (i=0; i < size; i++) 
-        printf("%d ", arr[i]); 
-    printf("\n"); 
-} 
-  
-// Driver program to test above functions 
-int main() 
-{ 
-    int arr[] = {64, 34, 25, 12, 22, 11, 90}; 
-    int n = sizeof(arr)/sizeof(arr[0]); 
-    bubbleSort(arr, n); 
-    printf("Sorted array: \n"); 
-    printArray(arr, n); 
-    return 0; 
-} 
+#include<stdio.h>
+#include<stdint.h>
+
+void _swap_(int32_t *a, int32_t *b){
+	int32_t temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+void bubble_sort(int32_t list[],uint32_t size){
+	uint32_t pass,index,i;
+	for(pass=0;pass<size-1;++pass){
+		for(index=size-1;index>pass;--index){
+			if(list[index]<list[index-1]){
+				_swap_(&list[index],&list[index-1]);
+			}
+		}
+	}
+	for(i=0;i<size;i++)
+{
+	printf("%d \t",list[i]);
+}
+}
+
+int main()
+{
+	int32_t a[10]={23,1,45,90,7,43};
+	bubble_sort(a,6);
+	return 0;
+}
